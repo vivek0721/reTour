@@ -1,36 +1,22 @@
 import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import {  Tabs } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
+        
+        <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
+        tabBarActiveTintColor: "#8A2BE2",
         headerShown: false,
       }}>
       <Tabs.Screen
         name="(home)"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color}/>,
+          tabBarIcon: () => <Feather name="home" size={24} color="#8A2BE2"/>,
           
         }}
       />
@@ -38,9 +24,10 @@ export default function TabLayout() {
         name="(explore)"
         options={{
           title: 'Explore',
-          tabBarIcon: ({ color }) => <Feather name="compass" size={24} color={color} />,
+          tabBarIcon: () => <Feather name="compass" size={24} color="#8A2BE2" />,
         }}
       />
     </Tabs>
+  
   );
 }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View } from '@/components/Themed';
-import { ImageBackground, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { Text, View,ImageBackground, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useRouter } from 'expo-router';
 
@@ -32,7 +31,11 @@ export default function LandingPage() {
       style={styles.container}
     >
       <View style={styles.overlay}>
-        <Text style={styles.logo}>reTour</Text>
+        {/* <Text style={styles.logo}>reTour</Text> '#8A2BE2' */}
+        <Text style={styles.logo}>
+        <Text style={{ color: '#FFD700' }}>re</Text>
+        <Text style={{ color: 'white' }}>Tour</Text>     
+      </Text>   
         <Animated.View 
           style={[
             styles.card,
@@ -51,14 +54,17 @@ export default function LandingPage() {
             <Text style={styles.titleHighlight}>Find,</Text>
             <Text style={styles.title}>Recover</Text>
             <Text style={styles.subtitle}>
-              Lost something valuable? Found an item that doesn't belong to you? Welcome to reTour!
+              Lost something valuable? Found an item that doesn't belong to you?
             </Text>
             <TouchableOpacity 
               style={styles.button} 
-              onPress={() => router.replace('(tabs)')}
+              onPress={() => router.replace('/(tabs)/(home)')}
             >
               <Text style={styles.buttonText}>Get started</Text>
             </TouchableOpacity>
+            <View  style={styles.subtitleView}>
+            <Text style={styles.subtitle2}> From 🏘️ of Brogrammers🍻</Text>
+            </View>
           </TouchableOpacity>
         </Animated.View>
       </View>
@@ -122,6 +128,16 @@ const styles = StyleSheet.create({
     fontSize: wp(20),
     fontWeight: 'bold',
     color: '#FFFFFF',
-    marginTop: hp(10),
+    marginTop: hp(11),
   },
+  subtitle2: {
+    fontSize: wp(3),
+    color: '#E0E0E0',
+    marginTop: hp(1),
+    
+  },
+  subtitleView: {
+   justifyContent: 'center',
+   alignItems: 'center'
+  }
 });

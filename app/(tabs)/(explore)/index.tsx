@@ -1,47 +1,62 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import React , { useState, useEffect }from 'react';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, TextInput, ScrollView , SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useRouter} from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
+import { useProduct } from '@/app/context/useProductContext';
 
-
-
-const products = [
-  { id: '1', name: 'Soft Element Jack', date: '2024-10-15', status: 'Lost', image: 'https://example.com/soft-element-jack.jpg' },
-  { id: '2', name: 'Leset Galant', date: '2024-10-18', status: 'Found', image: 'https://example.com/leset-galant.jpg' },
-  { id: '3', name: 'Chestar Chair', date: '2024-10-20', status: 'Lost', image: 'https://example.com/chestar-chair.jpg' },
-  { id: '4', name: 'Avrora Chair', date: '2024-10-21', status: 'Claimed', image: 'https://example.com/avrora-chair.jpg' },
-  { id: '5', name: 'Soft Element Jack', date: '2024-10-15', status: 'Lost', image: 'https://example.com/soft-element-jack.jpg' },
-  { id: '6', name: 'Leset Galant', date: '2024-10-18', status: 'Found', image: 'https://example.com/leset-galant.jpg' },
-  { id: '7', name: 'Chestar Chair', date: '2024-10-20', status: 'Lost', image: 'https://example.com/chestar-chair.jpg' },
-  { id: '8', name: 'Avrora Chair', date: '2024-10-21', status: 'Claimed', image: 'https://example.com/avrora-chair.jpg' },
-
-];
-
-const statusColors = {
-  Found: 'rgba(76, 175, 80, 0.7)',
-  Lost: 'rgba(244, 67, 54, 0.7)',
-  Claimed: 'rgba(33, 150, 243, 0.7)',
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
 };
 
 
+const statusColors = {
+  found: 'rgba(76, 175, 80, 0.7)',
+  lost: 'rgba(244, 67, 54, 0.7)',
+  claimed: 'rgba(33, 150, 243, 0.7)',
+};
 
 export default function DiscoverProducts() {
   const router= useRouter();
+  const {setFunc, products, getData, item }= useProduct();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Fetch data when screen comes into focus
+      getData();
+    }, [item])
+  );
+  
+  
+
   const ProductCard = ({ item }) => (
+
+    
     <View style={styles.card} >
-      <TouchableOpacity onPress={() => router.push({pathname:'product', params:item})}>
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <View style={[styles.statusBubble, { backgroundColor: statusColors[item.status] }]}>
-        <Text style={styles.statusText}>{item.status}</Text>
+      <TouchableOpacity onPress={() => {
+             setFunc(item);
+             router.push('/product');
+             }}>
+      <Image source={{ uri: item?.images }} style={styles.image} />
+      <View style={[styles.statusBubble, { backgroundColor: statusColors[item.flag] }]}>
+        <Text style={styles.statusText}>{item.flag.toUpperCase()}</Text>
       </View>
-      <Text style={styles.productName}>{item.name}</Text>
-      <Text style={styles.productDate}>{item.date}</Text>
+      <Text style={styles.productName}>{item.title}</Text>
+      <Text style={styles.productDate}>{formatDate(item.foundDate)}</Text>
       </TouchableOpacity>
     </View>
   );
+
+
   return (
+    <SafeAreaView style={styles.safeArea}>
     <ScrollView style={styles.container}>
-      <View style={styles.searchFilterContainer}>
+      {/* <View style={styles.searchFilterContainer}>
         <View style={styles.searchBar}>
           <Icon name="search" size={20} color="#888" />
           <TextInput 
@@ -52,24 +67,36 @@ export default function DiscoverProducts() {
         <TouchableOpacity style={styles.filterButton}>
           <Icon name="filter" size={20} color="#000" />
         </TouchableOpacity>
+      </View> */}
+      
+      <View style={styles.searchBar} >
+        <Text style={styles.searchInput}>Recently Lost/Found Items</Text>
       </View>
+  
 
       <FlatList
         data={products}
         renderItem={({ item }) => <ProductCard item={item} />}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item._id}
         numColumns={2}
         contentContainerStyle={styles.productList}
         scrollEnabled={false}
       />
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#F5DEB3', // Changed to beige
+    margin: 0,
+    padding: 0,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#F5F5DC',
     padding: 15,
   },
   header: {
@@ -103,6 +130,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 8,
     marginLeft: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: "#8A2BE2",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   filterButton: {
     backgroundColor: 'white',
@@ -124,6 +156,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    
   },
   image: {
     width: 140,
@@ -153,4 +186,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
+  headView:{
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headText:{
+    fontSize: 20,
+    fontWeight: 'bold'
+  }
 });

@@ -136,8 +136,8 @@ const RegisterLostItem = () => {
         const formData = new FormData();
         formData.append("title", itemDescription);
         formData.append("desc", itemDescription);
-        formData.append("Date", date.toISOString());
-        formData.append("Location", location);
+        formData.append("date", date.toISOString());
+        formData.append("location", location);
         formData.append("finderName", "");
         formData.append("finderNumber", "");
         formData.append("finderUid", "");
@@ -154,7 +154,7 @@ const RegisterLostItem = () => {
         });
 
     
-        const response = await Axios.post("/newItem/owner", formData,{
+        const response = await Axios.post("/items/newLost", formData,{
           headers: {
             "Content-Type": "multipart/form-data",
           },

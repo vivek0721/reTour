@@ -22,9 +22,9 @@ export const ProductContextProvider = ({ children }) => {
 
   const getData= async ()=>{
     try {
-      const data=await Axios.get("/all")
-      setProduct(data.data.data)
-     // console.log(data.data.data)
+      const data=await Axios.get("/items/allItems")
+      setProduct(data.data)
+      //console.log(data.data)
     } catch (error) {
       console.log("Error getting product data")
     }

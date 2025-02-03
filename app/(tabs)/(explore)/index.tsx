@@ -42,12 +42,12 @@ export default function DiscoverProducts() {
              setFunc(item);
              router.push('/product');
              }}>
-      <Image source={{ uri: item?.images }} style={styles.image} />
+      <Image source={{ uri: item?.image }} style={styles.image} />
       <View style={[styles.statusBubble, { backgroundColor: statusColors[item.flag] }]}>
         <Text style={styles.statusText}>{item.flag.toUpperCase()}</Text>
       </View>
       <Text style={styles.productName}>{item.title}</Text>
-      <Text style={styles.productDate}>{formatDate(item.foundDate)}</Text>
+      <Text style={styles.productDate}>{formatDate(item.date)}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -56,21 +56,12 @@ export default function DiscoverProducts() {
   return (
     <SafeAreaView style={styles.safeArea}>
     <ScrollView style={styles.container}>
-      {/* <View style={styles.searchFilterContainer}>
-        <View style={styles.searchBar}>
-          <Icon name="search" size={20} color="#888" />
-          <TextInput 
-            placeholder="Search products" 
-            style={styles.searchInput}
-          />
-        </View>
-        <TouchableOpacity style={styles.filterButton}>
-          <Icon name="filter" size={20} color="#000" />
-        </TouchableOpacity>
-      </View> */}
       
       <View style={styles.searchBar} >
         <Text style={styles.searchInput}>Recently Lost/Found Items</Text>
+        <TouchableOpacity> 
+          <Text>Filter</Text>
+        </TouchableOpacity>
       </View>
   
 

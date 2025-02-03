@@ -87,22 +87,17 @@ const ProductPage = () => {
       return;
     }
     const updateOwnerData = {
-      id: item._id,
-      data:{
-        owner_details: {
-          name: ownerName,
-          uid: ownerUID,
-          contact:  parseInt(ownerWhatsapp) ,
-        },
+        owmerName: ownerName,
+        ownerUid: ownerUID,
+        ownerNumber: parseInt(ownerWhatsapp),
         flag: 'claimed' 
-      }
       
     };
   
     try {
-      const response = await Axios.patch('/claim', updateOwnerData);
-      console.log(response.data);
-      Alert.alert('Success', 'Registered successfully');
+      const response = await Axios.patch(`/items/patchItem/${item._id}`, updateOwnerData);
+      // console.log(response.data);
+      // Alert.alert('Success', 'Registered successfully');
       setOwnerName('');
       setOwnerUID('');
       setOwnerWhatsapp('');
@@ -125,22 +120,16 @@ const ProductPage = () => {
       return;
     }
     const updateFinderData = {
-      id: item._id,
-      data:{
-        finder_details: {
-          name: finderName,
-          uid: finderUID,
-          contact:  parseInt(finderWhatsapp) ,
-        },
+        finderName: finderName,
+        finderUid: finderUID,
+        finderNumber: parseInt(finderWhatsapp),
         flag: 'claimed' 
-      }
-      
     };
   
     try {
-      const response = await Axios.patch('/claim', updateFinderData);
-      console.log(response.data);
-      Alert.alert('Success', 'Registered successfully');
+      const response = await Axios.patch(`/items/patchItem/${item._id}`, updateFinderData);
+      // console.log(response.data);
+      // Alert.alert('Success', 'Registered successfully');
       setFinderName('');
       setFinderUID('');
       setFinderWhatsapp('');
@@ -158,18 +147,18 @@ const ProductPage = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Image source={{ uri: item!.images }} style={styles.images} />
+      <Image source={{ uri: item!.image }} style={styles.images} />
       <View style={styles.contentContainer}>
         <Text style={styles.productName}>{item.title}</Text>
 
         <View style={styles.infoRow}>
           <Icon name="map-pin" size={18} color="#666" />
-          <Text style={styles.infoText}>Location:  {item.foundLocation}</Text>
+          <Text style={styles.infoText}>Location:  {item.location}</Text>
         </View>
 
         <View style={styles.infoRow}>
           <Icon name="calendar" size={18} color="#666" />
-          <Text style={styles.infoText}>Date: {formatDate(item.foundDate)}</Text>
+          <Text style={styles.infoText}>Date: {formatDate(item.date)}</Text>
         </View>
 
         <View style={styles.infoRow}>
@@ -179,7 +168,7 @@ const ProductPage = () => {
 
         <Text style={styles.descriptionTitle}>Description</Text>
         <Text style={styles.descriptionText}>
-          This {item.title} was {item.flag} in {item.foundLocation} on {formatDate(item.foundDate)}.
+          This {item.title} was {item.flag} in {item.location} on {formatDate(item.date)}.
         </Text>
 
         {renderActionButton()}
@@ -278,7 +267,7 @@ const ProductPage = () => {
               style={styles.modalButton}
               onPress={handleFinderSubmit}
             >
-              <Text style={styles.modalButtonText}>Show Owner's Details</Text>
+              <Text style={styles.modalButtonText}>Submit & Show Owner's Details</Text>
             </TouchableOpacity>
           </View>
         </PopupCard>
@@ -292,23 +281,23 @@ const ProductPage = () => {
             <View style={styles.container2}>
               <View style={styles.detailRow}>
                 <Text style={styles.label2}>Finder's Name:</Text>
-                <Text style={styles.value}>{item.finder_details.name}</Text>
+                <Text style={styles.value}>{item.finderName}</Text>
               </View>
               
               <View style={styles.detailRow}>
                 <Text style={styles.label2}>Finder's UID:</Text>
-                <Text style={styles.value}>{item.finder_details.uid}</Text>
+                <Text style={styles.value}>{item.finderUid}</Text>
               </View>
               
               <View style={styles.detailRow}>
                 <Text style={styles.label2}>Finder's Number:</Text>
-                <Text style={styles.value}>{item.finder_details.contact}</Text>
+                <Text style={styles.value}>{item.finderNumber}</Text>
               </View>
 
               <TouchableOpacity 
                 style={styles.callButton}
                 onPress={() => {
-                  const phoneNumber = item.finder_details.contact;
+                  const phoneNumber = item.finderNumber;
                   Linking.openURL(`tel:${phoneNumber}`);
                 }}
               >
@@ -327,24 +316,24 @@ const ProductPage = () => {
             <View style={styles.container2}>
               <View style={styles.detailRow}>
                 <Text style={styles.label2}>Owner's Name:</Text>
-                <Text style={styles.value}>{item.owner_details.name}</Text>
+                <Text style={styles.value}>{item.ownerName}</Text>
               </View>
               
               <View style={styles.detailRow}>
                 <Text style={styles.label2}>Owner's UID:</Text>
-                <Text style={styles.value}>{item.owner_details.uid}</Text>
+                <Text style={styles.value}>{item.ownerUid}</Text>
               </View>
               
               <View style={styles.detailRow}>
                 <Text style={styles.label2}>Owner's Number:</Text>
-                <Text style={styles.value}>{item.owner_details.contact}</Text>
+                <Text style={styles.value}>{item.ownerNumber}</Text>
               </View>
 
               
               <TouchableOpacity 
                 style={styles.callButton}
                 onPress={() => {
-                  const phoneNumber = item.owner_details.contact;
+                  const phoneNumber = item.ownerNumber;
                   Linking.openURL(`tel:${phoneNumber}`);
                 }}
               >

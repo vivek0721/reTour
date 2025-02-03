@@ -133,8 +133,8 @@ const RegisterFoundItem = () => {
       const formData = new FormData();
       formData.append("title", itemDescription);
       formData.append("desc", itemDescription);
-      formData.append("Date", date.toISOString());
-      formData.append("Location", location);
+      formData.append("date", date.toISOString());
+      formData.append("location", location);
       formData.append("finderName", finderName);
       formData.append("finderNumber", finderWhatsapp);
       formData.append("finderUid", finderUID);
@@ -151,7 +151,7 @@ const RegisterFoundItem = () => {
       });
 
 
-      const response = await Axios.post("/newItem/finder", formData,{
+      const response = await Axios.post("/items/newFound", formData,{
         headers: {
           "Content-Type": "multipart/form-data",
         },

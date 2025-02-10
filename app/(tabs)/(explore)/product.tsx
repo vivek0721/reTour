@@ -168,7 +168,7 @@ const ProductPage = () => {
 
         <Text style={styles.descriptionTitle}>Description</Text>
         <Text style={styles.descriptionText}>
-          This {item.title} was {item.flag} in {item.location} on {formatDate(item.date)}.
+          {item.desc}
         </Text>
 
         {renderActionButton()}

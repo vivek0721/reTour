@@ -42,7 +42,7 @@ export default function DiscoverProducts() {
              setFunc(item);
              router.push('/product');
              }}>
-      <Image source={{ uri: item?.image }} style={styles.image} />
+      <Image source={{ uri: item?.image?.replace(/^http:\/\//i, 'https://') || 'https://fallback-image-url.com' }} style={styles.image} />
       <View style={[styles.statusBubble, { backgroundColor: statusColors[item.flag] }]}>
         <Text style={styles.statusText}>{item.flag.toUpperCase()}</Text>
       </View>

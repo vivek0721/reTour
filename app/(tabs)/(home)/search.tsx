@@ -12,6 +12,7 @@ import {
   Dimensions,
   Modal,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -160,10 +161,10 @@ const RegisterLostItem = () => {
           },
         });
 
-      console.log("Response received:", response.data); // ✅ Log response data
+      //console.log("Response received:", response.data); // ✅ Log response data
       Alert.alert("Success", "Lost item registered successfully");
       resetForm();
-      router.push("../(explore)");
+      
     } catch (error) {
       console.error("Submit error:", error);
   
@@ -178,6 +179,7 @@ const RegisterLostItem = () => {
       Alert.alert("Error", `Failed to submit item: ${error.message}`);
     } finally {
       setIsLoading(false);
+      router.push("../(explore)");
     }
   };
     
@@ -357,6 +359,20 @@ const RegisterLostItem = () => {
               </TouchableOpacity>
             </View>
           </PopupCard>
+
+          <PopupCard
+          title="Uploading Details"
+          isVisible={isLoading}
+          onClose={() => {}}
+        >
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#8A2BE2" />
+            <Text style={styles.loadingText}>Please wait while we upload your details...</Text>
+          </View>
+        </PopupCard>
+
+
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -550,7 +566,18 @@ const styles = StyleSheet.create({
   placeholderText: {
     color: '#A9A9A9',
     fontSize: 16,
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    padding: 20,
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#8A2BE2',
+    textAlign: 'center',
   }
+
 });
 
 export default RegisterLostItem;

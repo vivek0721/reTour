@@ -1,7 +1,13 @@
+
+
+
 import React, { useState } from 'react';
 import { Text, View,ImageBackground, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useRouter } from 'expo-router';
+
+
+
 
 export default function LandingPage() {
   const router = useRouter();
@@ -58,7 +64,7 @@ export default function LandingPage() {
             </Text>
             <TouchableOpacity 
               style={styles.button} 
-              onPress={() => router.replace('/(tabs)/(home)')}
+              onPress={() => router.push('/(tabs)/(home)')}
             >
               <Text style={styles.buttonText}>Get started</Text>
             </TouchableOpacity>

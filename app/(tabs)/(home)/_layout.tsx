@@ -4,7 +4,6 @@ import { Link, Stack } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
 import { ProductContextProvider } from '@/app/context/useProductContext';
 
-
 export default function TabLayout() {
   
 
@@ -12,8 +11,7 @@ export default function TabLayout() {
     <ProductContextProvider>
 
     
-    <Stack
-      >
+    <Stack>
       <Stack.Screen
         name="index"
       options={{
@@ -33,7 +31,6 @@ export default function TabLayout() {
       <Stack.Screen
         name="found"
         options={{ title: "Register a Found Item" , headerShown: true }}
-
       />
 
     </Stack>

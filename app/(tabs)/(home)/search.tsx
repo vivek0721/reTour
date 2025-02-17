@@ -366,7 +366,7 @@ const RegisterLostItem = () => {
           onClose={() => {}}
         >
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#8A2BE2" />
+            <ActivityIndicator size='large' color="#8A2BE2" />
             <Text style={styles.loadingText}>Please wait while we upload your details...</Text>
           </View>
         </PopupCard>

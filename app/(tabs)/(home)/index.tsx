@@ -1,17 +1,22 @@
 import React, { useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView, Animated } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView, Animated, Button } from 'react-native';
+import { Link, useRouter } from 'expo-router';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { Platform } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+
+import { SignedIn, SignedOut, useUser, useClerk } from '@clerk/clerk-expo'
+import { SignOutButton } from '@clerk/clerk-react'
+
 
 export default function TabOneScreen() {
   const router = useRouter();
   const scaleAnim = new Animated.Value(0);
   const fadeAnim = new Animated.Value(0);
-
+  const {signOut} = useClerk();
+  
   useEffect(() => {
     Animated.parallel([
       Animated.spring(scaleAnim, {
@@ -35,8 +40,20 @@ export default function TabOneScreen() {
 
   const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
+  const handleSignOut= async()=>{
+    try{
+      await signOut()
+      router.push("/(tabs)/(home)")
+    }catch(err){
+      console.error(JSON.stringify(err, null, 2))
+    }
+
+  }
+
   return (
+    
     <SafeAreaView style={styles.container}>
+      <SignedIn>
       <Animated.View 
         style={[
           styles.content,
@@ -53,8 +70,8 @@ export default function TabOneScreen() {
             activeOpacity={0.9}
           >
             <View style={styles.iconContainer}>
-              <FontAwesome5 
-                name="question-circle" 
+              <Ionicons
+                name="search-circle-sharp" 
                 size={hp(12)} 
                 color="#FFD700" 
               />
@@ -65,6 +82,13 @@ export default function TabOneScreen() {
           </AnimatedTouchable>
         </View>
 
+          <View style={styles.saveButtonContainer}>
+            <TouchableOpacity style={styles.saveButton} onPress={handleSignOut}>
+              <Text style={styles.saveButtonText}>Sign Out</Text>
+            </TouchableOpacity>
+          </View>
+
+
         <View style={styles.buttonContainer}>
           <AnimatedTouchable 
             style={styles.buttonFound}
@@ -72,8 +96,8 @@ export default function TabOneScreen() {
             activeOpacity={0.9}
           >
             <View style={styles.iconContainer}>
-              <FontAwesome5 
-                name="search-location" 
+              <Ionicons 
+                name="location" 
                 size={hp(12)} 
                 color="#8A2BE2" 
               />
@@ -84,7 +108,60 @@ export default function TabOneScreen() {
           </AnimatedTouchable>
         </View>
       </Animated.View>
+      </SignedIn>
+
+      <SignedOut>
+      <Animated.View 
+    style={[
+      styles.content,
+      {
+        opacity: fadeAnim,
+        transform: [{ scale: scaleAnim }]
+      }
+    ]}
+  >
+    <View style={styles.buttonContainer}>
+      <AnimatedTouchable 
+        style={styles.buttonLost}
+        onPress={() => router.push("/(auth)/sign-in")}
+        activeOpacity={0.9}
+      >
+        <View style={styles.iconContainer}>
+          <Ionicons
+            name="log-in" 
+            size={hp(12)} 
+            color="#FFD700" 
+          />
+          <View style={styles.pulseCircle} />
+        </View>
+        <Text style={[styles.buttonText, styles.lostText]}>Sign In</Text>
+        <Text style={styles.subText}>Access your account</Text>
+      </AnimatedTouchable>
+    </View>
+
+    <View style={styles.buttonContainer}>
+      <AnimatedTouchable 
+        style={styles.buttonFound}
+        onPress={() => router.push("/(auth)/sign-up")}
+        activeOpacity={0.9}
+      >
+        <View style={styles.iconContainer}>
+          <Ionicons 
+            name="person-add" 
+            size={hp(12)} 
+            color="#8A2BE2" 
+          />
+          <View style={[styles.pulseCircle, styles.pulseCircleFound]} />
+        </View>
+        <Text style={[styles.buttonText, styles.foundText]}>Sign Up</Text>
+        <Text style={[styles.subText, styles.foundSubText]}>Create a new account</Text>
+      </AnimatedTouchable>
+    </View>
+  </Animated.View>
+      </SignedOut>
+      
     </SafeAreaView>
+    
   );
 }
 
@@ -187,4 +264,26 @@ const styles = StyleSheet.create({
   pulseCircleFound: {
     backgroundColor: 'rgba(138, 43, 226, 0.1)',
   },
+  saveButtonContainer: {
+    width: '100%',
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+  },
+  saveButton: {
+    backgroundColor: '#F5DEB3',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  saveButtonText: {
+    color: '#4B0082',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
 });

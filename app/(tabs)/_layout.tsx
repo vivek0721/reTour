@@ -1,12 +1,12 @@
 import React from 'react';
 import {  Tabs } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
-
+import { Stack } from 'expo-router/stack'
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function TabLayout() {
   return (
-        
         <Tabs
       screenOptions={{
         tabBarActiveTintColor: "#8A2BE2",
@@ -16,7 +16,7 @@ export default function TabLayout() {
         name="(home)"
         options={{
           title: 'Home',
-          tabBarIcon: () => <Feather name="home" size={24} color="#8A2BE2"/>,
+          tabBarIcon: () => <Ionicons name="home" size={24} color="#8A2BE2"/>,
           
         }}
       />
@@ -24,10 +24,9 @@ export default function TabLayout() {
         name="(explore)"
         options={{
           title: 'Explore',
-          tabBarIcon: () => <Feather name="compass" size={24} color="#8A2BE2" />,
+          tabBarIcon: () => <Ionicons name="compass" size={24} color="#8A2BE2" />,
         }}
       />
     </Tabs>
-  
   );
 }

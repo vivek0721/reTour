@@ -5,8 +5,22 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { ProductContextProvider } from './context/useProductContext';
-
 export { ErrorBoundary } from 'expo-router';
+//
+import { ClerkProvider, ClerkLoaded } from '@clerk/clerk-expo';
+import { tokenCache } from '@/cache'
+
+
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
+
+if (!publishableKey) {
+  throw new Error(
+    'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env',
+  )
+}
+//
+
 
 export const unstable_settings = {
   initialRouteName: 'index',
@@ -42,9 +56,16 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
+    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+    <ClerkLoaded>
     <Stack>
+      
       <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      
     </Stack>
+    </ClerkLoaded>
+    </ClerkProvider>
   );
 }
